@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+manager_document_document,access.document.document,model_document_document,,1,1,1,1
+manager_document_management,access.document.management,model_document_file_upload_line,,1,1,1,1
+
+user_document_document,access.document.document,model_document_document,,1,1,1,0
+user_doccument_management,access.document.management,model_document_file_upload_line,,1,1,1,0

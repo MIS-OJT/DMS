@@ -1,0 +1,306 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+    <data>
+
+        <!-- FOLDERS FORM VIEW -->
+        <!-- ////////////////////////////////////////////-->
+        <record id="folders_view_form" model="ir.ui.view">
+            <field name="name">folders_view_form</field>
+            <field name="model">document.document</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button class="oe_stat_button" icon="fa-file-text-o" disabled="1">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="file_count"/>
+                                    </span>
+                                    <span class="o_stat_text">Files</span>
+                                </div>
+                            </button>
+                        </div>
+                        <widget name="web_ribbon" text="Private"
+                                attrs="{'invisible': [('access_mode', '!=', 'private')]}" bg_color="bg-danger"/>
+
+                        <widget name="web_ribbon" text="Public"
+                                attrs="{'invisible': [('access_mode', '!=', 'public')]}"/>
+
+                        <div class="oe_title" style="width: 40%">
+                            <label for="directory_name" class="oe_edit_only" string="Folder Name"/>
+                            <h1>
+                                <field name="directory_name" placeholder="E.g. Sample Folder"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="description"/>
+                                <field name="created_by"/>
+                                <field name="department"/>
+                                <separator/>
+                                <field name="create_date" string="Create date"
+                                       attrs="{'invisible': [('create_date', '=', False)]}"/>
+                                <field name="write_date" string="Updated on"
+                                       attrs="{'invisible': [('write_date', '=', False)]}"/>
+                                <field name="write_uid" string="Updated by"
+                                       attrs="{'invisible': [('write_uid', '=', False)]}" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="access_mode"/>
+                                <field name="dept_tag_ids" widget="many2many_tags"
+                                       attrs="{'invisible': [('access_mode', '=', 'private')]}"/>
+                                <field name="user_tag_ids" widget="many2many_tags"
+                                       attrs="{'invisible': [('access_mode', '=', 'private')]}"/>
+                                <!--                                <field name="access_mode"-->
+                                <!--                                       attrs="{'invisible': [('created_by', '!=', user_id)]}"/>-->
+                                <!--                                <field name="start_date" widget="daterange" options="{'related_end_date': 'end_date'}"-->
+                                <!--                                       attrs="{'invisible': [('checkbox', '=', False)]}"/>-->
+                                <!--                                <field name="end_date" widget="daterange" options="{'related_start_date': 'start_date'}"-->
+                                <!--                                       attrs="{'invisible': [('checkbox', '=', False)]}"/>-->
+                                <!--                                <field name="checkbox" widget="checkbox"/>-->
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="File">
+
+                                <field name="file_upload_line_ids">
+                                    <tree editable="top" edit="true">
+                                        <field name="file_name"/>
+                                        <field name="file_upload" filename="file_name" />
+                                        <field name="file_copy" readonly="1" widget="CopyClipboardChar"/>
+                                        <field name="file_upload" filename="file_name" widget="binary"
+                                               string="Download"/>
+                                        <button name="preview_file" type="object" class="btn-link"
+                                                icon="fa-external-link" style="font-size: 20px;"/>
+                                    </tree>
+                                    <form>
+
+                                        <group>
+                                            <field name="file_name"/>
+                                            <field name="create_uid" string="Owner" readonly="1"/>
+                                            <field name="file_name" invisible="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="create_date" string="Created on" readonly="1"/>
+                                            <field name="last_activity"/>
+                                            <!--                                                <field name="write_uid" string="Last activity by" readonly="1"/>-->
+                                            <!--                                                <field name="write_date" string="At" readonly="1"/>-->
+                                        </group>
+                                        <separator/>
+                                        <field name="file_copy" readonly="1" widget="CopyClipboardChar"/>
+                                        <h3>Download</h3>
+                                        <label for="file_upload" class="oe_edit_only" string="Download"/>
+                                        <field name="file_upload" widget="binary" filename="file_name"
+                                               string="Download"/>
+
+
+                                    </form>
+                                </field>
+
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <!--                    <div class="oe_chatter">-->
+                    <!--                        <field name="message_follower_ids" widget="mail_followers"/>-->
+                    <!--                        <field name="message_ids" widget="mail_thread"/>-->
+                    <!--                    </div>-->
+                </form>
+            </field>
+        </record>
+
+        <!-- MY FOLDERS PAGE TREE VIEW -->
+        <!-- ////////////////////////////////////////////-->
+        <record id="my_folders_tree_view" model="ir.ui.view">
+            <field name="name">my_folders_tree_view</field>
+            <field name="model">document.document</field>
+            <field name="arch" type="xml">
+                <tree import="false" background-carmine="access_mode=='private'">
+                    <!--                    <button name="test" type="object"-->
+                    <!--                            string="Test"-->
+                    <!--                            class="oe_highlight"/>-->
+                    <field name="sequence" widget="handle"/>
+                    <field name="access_mode" readonly="1"/>
+                    <field name="directory_name"/>
+                    <field name="description"/>
+                    <field name="created_by"/>
+                    <field name="create_date" widget="date"/>
+                    <field name="dept_tag_ids" widget="many2many_tags"/>
+                    <field name="user_tag_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- FOLDERS KANBAN VIEW -->
+        <!-- ////////////////////////////////////////////-->'
+        <record id="folders_view_kanban" model="ir.ui.view">
+            <field name="name">document.view.kanban</field>
+            <field name="model">document.document</field>
+            <field name="arch" type="xml">
+                <kanban import="false">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <h2>
+                                    <field name="directory_name"/>
+                                </h2>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- UPLOADED FILES PAGE TREE VIEW -->
+        <!-- ////////////////////////////////////////////-->
+        <record id="uploaded_files_view_tree" model="ir.ui.view">
+            <field name="name">uploaded_files_view_tree</field>
+            <field name="model">document.file.upload.line</field>
+            <field name="arch" type="xml">
+                <tree import="false" create="true">
+                    <field name="file_name"/>
+                    <field name="directory_name"/>
+                    <field name="create_date" string="Last modified"/>
+                    <field name="file_copy" readonly="1" widget="CopyClipboardChar"/>
+                    <field name="file_upload" filename="file_name" widget="binary"
+                           string="Download"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- UPLOADED FILES PAGE FORM VIEW -->
+        <!-- ////////////////////////////////////////////-->
+        <record id="uploaded_files_view_view_form" model="ir.ui.view">
+            <field name="name">uploaded_files_view_form</field>
+            <field name="model">document.file.upload.line</field>
+            <field name="arch" type="xml">
+                <form import="false" create="false">
+                    <sheet>
+                        <!--                        <group>-->
+                        <!--                            <field name="file_name"/>-->
+                        <!--                            <field name="directory_name"/>-->
+                        <!--                            <field name="create_date" string="Last modified"/>-->
+                        <!--                            <field name="file_copy" readonly="1" widget="CopyClipboardChar"/>-->
+                        <!--                            <field name="file_upload" filename="file_name" widget="binary"-->
+                        <!--                                   string="Download"/>-->
+                        <!--                        </group>-->
+                        <group>
+                            <field name="file_name"/>
+                            <field name="create_uid" string="Owner" readonly="1"/>
+                            <field name="file_name" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="create_date" string="Created on" readonly="1"/>
+                            <field name="last_activity"/>
+                            <!--                                                <field name="write_uid" string="Last activity by" readonly="1"/>-->
+                            <!--                                                <field name="write_date" string="At" readonly="1"/>-->
+                        </group>
+
+                        <separator/>
+                        <field name="file_copy" readonly="1" widget="CopyClipboardChar"/>
+                        <h3>Download</h3>
+                        <label for="file_upload" class="oe_edit_only" string="Download"/>
+                        <field name="file_upload" widget="binary" filename="file_name"
+                               string="Download"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- SHARE FOLDERS TREE VIEW -->
+        <!-- ////////////////////////////////////////////-->
+        <record id="shared_folders_tree_view" model="ir.ui.view">
+            <field name="name">shared_folders_tree_view</field>
+            <field name="model">document.document</field>
+            <field name="arch" type="xml">
+                <tree create="false" import="false">
+
+                    <field name="sequence" widget="handle"/>
+                    <field name="directory_name" string="Folder Name"/>
+                    <field name="description"/>
+                    <field name="created_by"/>
+                    <field name="create_date" widget="date"/>
+                    <field name="dept_tag_ids" widget="many2many_tags"/>
+                    <field name="user_tag_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- SHARED FOLDERS KANBAN VIEW  -->
+        <!-- ////////////////////////////////////////////-->
+        <record id="shared_folders_kanban_view" model="ir.ui.view">
+            <field name="name">shared_folders_kanban_view</field>
+            <field name="model">document.document</field>
+            <field name="arch" type="xml">
+                <kanban create="false" import="false">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <h2>
+                                    <field name="directory_name"/>
+                                </h2>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <!-- SHARED FILES PAGE TREE VIEW -->
+        <!-- ////////////////////////////////////////////-->
+        <record id="shared_files_tree_view" model="ir.ui.view">
+            <field name="name">shared_files_tree_view</field>
+            <field name="model">document.file.upload.line</field>
+            <field name="arch" type="xml">
+                <tree string="shared_files_tree" create="false" import="false">
+                    <field name="directory_name" string="Folder Name"/>
+                    <field name="file_name"/>
+                    <field name="create_date" string="Last modified"/>
+                    <field name="file_copy" readonly="1" widget="CopyClipboardChar"/>
+                    <field name="file_upload" filename="file_name" widget="binary"
+                           string="Download"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!--         MY FOLDERS FILTER-->
+        <!--         ////////////////////////////////////////////-->
+        <record id="my_folders_tree_search" model="ir.ui.view">
+            <field name="name">my_folders_tree_search</field>
+            <field name="model">document.document</field>
+            <field name="arch" type="xml">
+                <search string="Model Filters">
+                    <filter name="filter_option_1" string="Public" domain="[('access_mode', '=', 'public')]"/>
+                    <filter name="filter_option_2" string="Private" domain="[('access_mode', '=', 'private')]"/>
+                </search>
+            </field>
+        </record>
+
+
+<!--        <record id="view_deleted_file_list" model="ir.ui.view">-->
+<!--            <field name="name">deleted.file.list</field>-->
+<!--            <field name="model">deleted.file</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <tree>-->
+<!--                    <field name="file_name"/>-->
+<!--                    <field name="file_upload" widget="binary"/>-->
+<!--                    <field name="create_uid" string="Deleted by"/>-->
+<!--                    <field name="create_date" string="Date Deleted"/>-->
+<!--                </tree>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        &lt;!&ndash; Create an action to open the list view &ndash;&gt;-->
+<!--        <record id="action_deleted_file_list" model="ir.actions.act_window">-->
+<!--            <field name="name">Deleted Files</field>-->
+<!--            <field name="res_model">deleted.file</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--        </record>-->
+
+    </data>
+</odoo>

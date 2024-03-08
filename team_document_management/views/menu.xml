@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="document_action" model="ir.actions.act_window">
+            <field name="name">My Folders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">document.document</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="domain">[('created_by', '=', uid)]</field>
+            <field name="view_id" ref="my_folders_tree_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    Create new folders and manage them here.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="uploaded_files_action" model="ir.actions.act_window">
+            <field name="name">My Uploaded Files</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">document.file.upload.line</field>
+            <field name="domain">[('document_id.created_by', '=', uid)]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    View uploaded files here.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="shared_documents_action" model="ir.actions.act_window">
+            <field name="name">Shared Folders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">document.document</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="shared_folders_tree_view"/>
+            <field name="domain">[('created_by', '!=', uid)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    View files shared with you here.
+                </p>
+            </field>
+        </record>
+
+
+        <record id="shared_files_action" model="ir.actions.act_window">
+            <field name="name">Shared Files</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">document.file.upload.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="shared_files_tree_view"/>
+            <field name="domain">[('document_id.created_by', '!=', uid)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    View files shared with you here.
+                </p>
+            </field>
+        </record>
+
+
+        <!--MODULE NAME-->
+        <menuitem id="module_root" name="DMS" sequence="0"/>
+
+        <!--MAIN MENUS-->
+        <menuitem id="doc_document_action" name="My Folders" parent="module_root"
+                  action="document_action" sequence="1"/>
+
+        <menuitem id="doc_uploaded_files_action" name="My Uploaded Files" parent="module_root"
+                  action="uploaded_files_action" sequence="2"/>
+
+        <menuitem id="doc_shared_files_action" name="Shared with me" parent="module_root" sequence="3"/>
+
+<!--        <menuitem id="doc_deleted_files_action" name="Deleted Files" parent="module_root"-->
+<!--          action="action_deleted_file_list" sequence="4"/>-->
+
+        <!--SUBMENUS for "Shared with me" -->
+        <menuitem id="first_submenu" name="Shared Folders" parent="doc_shared_files_action"
+                  action="shared_documents_action"
+                  sequence="1"/>
+
+        <menuitem id="second_submenu" name="Shared Files" parent="doc_shared_files_action"
+                  action="shared_files_action"
+                  sequence="2"/>
+
+    </data>
+</odoo>
