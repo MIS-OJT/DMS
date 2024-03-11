@@ -89,7 +89,7 @@ class DocumentFileUploadLine(models.Model):
     document_id = fields.Many2one('document.document', string='Document')
     directory_name = fields.Char(related='document_id.directory_name', store=True)
     file_name = fields.Char(string='File Name', required=True)
-    file_upload = fields.Many2many('ir.attachment', string='Upload File', required=True, attachment=True, store=True)
+    file_upload = fields.Binary(string='Upload File', required=True, attachment=True, store=True)
     file_url = fields.Char(string='File URL', readonly=True)
     file_path = fields.Char(string='File Path')
     file_copy = fields.Char(string='Copy File')

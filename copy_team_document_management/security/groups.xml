@@ -6,11 +6,11 @@
         </record>
         <record id="group_doc_manager" model="res.groups">
             <field name="name">Manager</field>
-            <field name="category_id" ref="team_document_management.module_team_document_management"/>
+            <field name="category_id" ref="copy_team_document_management.module_team_document_management"/>
         </record>
         <record id="group_doc_user" model="res.groups">
             <field name="name">User</field>
-            <field name="category_id" ref="team_document_management.module_team_document_management"/>
+            <field name="category_id" ref="copy_team_document_management.module_team_document_management"/>
         </record>
 
         <record id="security_rule_document_document" model="ir.rule">

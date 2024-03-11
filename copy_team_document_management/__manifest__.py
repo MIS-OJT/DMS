@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Team Pacific Corporation Document Management",
+    'name': "Copy-Team Pacific Corporation Document Management",
     'version': '0.1',
     'sequence': 0,
     'summary': """
